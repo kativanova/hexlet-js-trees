@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "@hexlet/immutable-fs-trees": "^0.7.1",
+    "lodash": "^4.17.21"
+  },
   "devDependencies": {
     "jest": "^27.0.6",
     "@jest/globals": "^27.0.1",
