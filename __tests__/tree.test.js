@@ -3,7 +3,8 @@
 import {
   getChildren, mkdir, mkfile, getMeta,
 } from '@hexlet/immutable-fs-trees';
-import { compressImages } from '../src/tree.js';
+import { expect, test } from '@jest/globals';
+import { compressImages, changeOwner } from '../src/tree.js';
 
 test('compressImages 1', () => {
   const tree = mkdir('my documents', [
@@ -81,4 +82,67 @@ test('compressImages 3 - deepClone', () => {
   const oldFile = getChildren(tree)[0];
   const oldFileMeta = getMeta(oldFile);
   expect(oldFileMeta.attributes.hide).toEqual(false);
+});
+
+test('changeOwner1', () => {
+  const tree = mkdir('/', [
+    mkdir('etc', [
+      mkfile('bashrc'),
+      mkfile('consul.cfg'),
+    ], { owner: 'nobody' }),
+    mkfile('hexletrc'),
+    mkdir('bin', [
+      mkfile('ls'),
+      mkfile('cat'),
+    ]),
+  ]);
+
+  const expectation = [
+    {
+      name: 'etc',
+      type: 'directory',
+      meta: { owner: 'katya' },
+      children: [
+        {
+          name: 'bashrc',
+          type: 'file',
+          meta: { owner: 'katya' },
+        },
+        {
+          name: 'consul.cfg',
+          type: 'file',
+          meta: { owner: 'katya' },
+        },
+      ],
+    },
+    {
+      name: 'hexletrc',
+      meta: { owner: 'katya' },
+      type: 'file',
+    },
+    {
+      name: 'bin',
+      type: 'directory',
+      meta: { owner: 'katya' },
+      children: [
+        {
+          name: 'ls',
+          type: 'file',
+          meta: { owner: 'katya' },
+        },
+        {
+          name: 'cat',
+          type: 'file',
+          meta: { owner: 'katya' },
+        },
+      ],
+    },
+  ];
+
+  const newTree = changeOwner(tree, 'katya');
+
+  expect(newTree).toMatchObject({
+    meta: { owner: 'katya' },
+    children: expectation,
+  });
 });

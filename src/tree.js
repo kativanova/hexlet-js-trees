@@ -24,5 +24,21 @@ const compressImages = (tree) => {
 
   return mkdir(getName(tree), newChildren, meta);
 };
-export { compressImages };
+
+const changeOwner = (tree, owner) => {
+  const meta = getMeta(tree);
+  const newMeta = _.cloneDeep(meta);
+  newMeta.owner = owner;
+
+  if (isFile(tree)) {
+    return mkfile(getName(tree), newMeta);
+  }
+
+  const children = getChildren(tree);
+  const newChildren = children.map((child) => changeOwner(child, owner));
+
+  return mkdir(getName(tree), newChildren, newMeta);
+};
+
+export { compressImages, changeOwner };
 // END
