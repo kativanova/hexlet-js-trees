@@ -40,5 +40,14 @@ const changeOwner = (tree, owner) => {
   return mkdir(getName(tree), newChildren, newMeta);
 };
 
-export { compressImages, changeOwner };
+const getNodesCount = (node) => {
+  if (isFile(node)) {
+    return 1;
+  }
+  const children = getChildren(node);
+  const subNodesCount = children.map(getNodesCount);
+
+  return 1 + _.sum(subNodesCount);
+};
+export { compressImages, changeOwner, getNodesCount };
 // END

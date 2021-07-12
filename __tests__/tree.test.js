@@ -4,7 +4,7 @@ import {
   getChildren, mkdir, mkfile, getMeta,
 } from '@hexlet/immutable-fs-trees';
 import { expect, test } from '@jest/globals';
-import { compressImages, changeOwner } from '../src/tree.js';
+import { compressImages, changeOwner, getNodesCount } from '../src/tree.js';
 
 test('compressImages 1', () => {
   const tree = mkdir('my documents', [
@@ -145,4 +145,19 @@ test('changeOwner1', () => {
     meta: { owner: 'katya' },
     children: expectation,
   });
+});
+
+test('getNodesCount1', () => {
+  const tree = mkdir('/', [
+    mkdir('etc', [
+      mkfile('bashrc'),
+      mkfile('consul.cfg'),
+    ]),
+    mkfile('hexletrc'),
+    mkdir('bin', [
+      mkfile('ls'),
+      mkfile('cat'),
+    ]),
+  ]);
+  expect(getNodesCount(tree)).toBe(8);
 });
