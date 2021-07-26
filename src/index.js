@@ -1,7 +1,6 @@
-import { mkdir, mkfile } from '@hexlet/immutable-fs-trees';
-import { getNodesCount } from './tree.js';
+import sortDeps from './js_trees_dependencies.js';
 
-const tree = mkdir('/', [
+/* const tree = mkdir('/', [
   mkdir('etc', [
     mkfile('bashrc'),
     mkfile('consul.cfg'),
@@ -14,3 +13,14 @@ const tree = mkdir('/', [
 ]);
 
 console.log(getNodesCount(tree));
+ */
+
+const deps1 = {
+  mongo: [],
+  tzinfo: ['thread_safe'],
+  uglifier: ['execjs'],
+  execjs: ['thread_safe', 'json'],
+  redis: [],
+};
+
+console.log(sortDeps(deps1));
