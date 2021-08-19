@@ -1,4 +1,4 @@
-import sortDeps from './js_trees_dependencies.js';
+import itinerary from './itinerary.js';
 
 /* const tree = mkdir('/', [
   mkdir('etc', [
@@ -14,13 +14,28 @@ import sortDeps from './js_trees_dependencies.js';
 
 console.log(getNodesCount(tree));
  */
+const tree = ['Moscow',
+  [
+    ['Smolensk'],
+    ['Yaroslavl'],
+    ['Voronezh', [
+      ['Liski'],
+      ['Boguchar'],
+      ['Kursk', [
+        ['Belgorod', [
+          ['Borisovka'],
+        ]],
+        ['Kurchatov'],
+      ]],
+    ]],
+    ['Ivanovo', [
+      ['Kostroma'], ['Kineshma'],
+    ]],
+    ['Vladimir'],
+    ['Tver', [
+      ['Klin'], ['Dubna'], ['Rzhev'],
+    ]],
+  ],
+];
 
-const deps1 = {
-  mongo: [],
-  tzinfo: ['thread_safe'],
-  uglifier: ['execjs'],
-  execjs: ['thread_safe', 'json'],
-  redis: [],
-};
-
-console.log(sortDeps(deps1));
+itinerary(tree, 'Dubna', 'Kostroma');
