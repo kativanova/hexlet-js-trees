@@ -6,10 +6,12 @@ const makeJoints = (tree, parent) => {
     return { [leaf]: [parent] };
   }
   const flatChildren = _.flatten(children);
-  const neighbours = _.concat(flatChildren.filter((child) => !Array.isArray(child)), parent);
+  const neighbours = [...flatChildren, parent]
+    .filter((neighbour) => !_.isArray(neighbour) && neighbour !== undefined);
+  const joints = children
+    .reduce((acc, child) => ({...acc, ...makeJoints(child, leaf)}), {});
   return {
-    [leaf]: neighbours,
-    ...children.reduce((acc, child) => ({ ...acc, ...makeJoints(child, leaf) }), {}),
+    [leaf]: neighbours, ...joints
   };
 };
 
