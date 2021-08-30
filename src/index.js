@@ -38,4 +38,4 @@ const tree = ['Moscow',
   ],
 ];
 
-itinerary(tree, 'Dubna', 'Kostroma');
+console.log(itinerary(tree, 'Dubna', 'Kostroma'));
