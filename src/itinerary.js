@@ -11,16 +11,16 @@ const makeJoints = (tree, parent) => {
   const neighbours = [...flatChildren, parent]
     .filter((neighbour) => !_.isArray(neighbour) && neighbour !== undefined);
   const joints = children
-    .reduce((acc, child) => ({...acc, ...makeJoints(child, leaf)}), {});
+    .reduce((acc, child) => ({ ...acc, ...makeJoints(child, leaf) }), {});
   return {
-    [leaf]: neighbours, ...joints
+    [leaf]: neighbours, ...joints,
   };
 };
 
 const findRoute = (start, finish, joints) => {
   const iter = (current, route) => {
     const routeToCurrent = [...route, current];
-    
+
     if (current === finish) {
       return routeToCurrent;
     }
@@ -29,11 +29,11 @@ const findRoute = (start, finish, joints) => {
     const filtered = neighbours
       .filter((neighbour) => !routeToCurrent.includes(neighbour));
     return filtered
-      .reduce((acc, neighbour) => _.concat(acc, iter(neighbour, routeToCurrent)), [])
-  }
+      .reduce((acc, neighbour) => _.concat(acc, iter(neighbour, routeToCurrent)), []);
+  };
 
   return iter(start, []);
-}
+};
 
 const itinerary = (tree, start, finish) => {
   const joints = makeJoints(tree);
