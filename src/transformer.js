@@ -7,30 +7,34 @@ const makeJoints = (node, parent) => {
     return { [leaf]: [parent] };
   }
 
-  const neighbours = _.concat(parent, children);
-  const flatNeighbours = _.flatten(neighbours)
-    .filter((neighbour) => !_.isArray(neighbour) && neighbour !== undefined);
-  const joints = children
-    .reduce((acc, child) => ({ ...acc, ...makeJoints(child, leaf) }), {});
-  return { [leaf]: flatNeighbours, ...joints };
+  const flatChildren = _.flatten(children);
+  const neighbours = [...flatChildren, parent].filter(
+    (neighbour) => !_.isArray(neighbour) && neighbour,
+  );
+
+  const joints = children.reduce(
+    (acc, child) => ({ ...acc, ...makeJoints(child, leaf) }),
+    {},
+  );
+  return { [leaf]: neighbours, ...joints };
 };
 
-const buildTree = (node, joints, visited = []) => {
-  const children = joints[node];
-  visited.push(node);
+const buildTree = (node, joints) => {
+  const iter = (leaf, acc) => {
+    const checked = [...acc, leaf];
 
-  const neighbours = children
-    .filter((child) => !visited.includes(child))
-    .map((child) => buildTree(child, joints, visited));
-  return _.isEmpty(neighbours) ? [node] : [node, neighbours];
+    const neighbours = joints[leaf]
+      .filter((child) => !checked.includes(child))
+      .map((child) => iter(child, checked));
+    return _.isEmpty(neighbours) ? [leaf] : [leaf, neighbours];
+  };
+
+  return iter(node, []);
 };
 
 const transformer = (tree, newRoot) => {
   const joints = makeJoints(tree);
-  console.log(joints);
-  const newTree = buildTree(newRoot, joints);
-  console.log(newTree);
-  return newTree;
+  return buildTree(newRoot, joints);
 };
 
 export default transformer;
