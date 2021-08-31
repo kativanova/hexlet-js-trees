@@ -1,41 +1,14 @@
-import itinerary from './itinerary.js';
+import transformer from './transformer.js';
 
-/* const tree = mkdir('/', [
-  mkdir('etc', [
-    mkfile('bashrc'),
-    mkfile('consul.cfg'),
-  ]),
-  mkfile('hexletrc'),
-  mkdir('bin', [
-    mkfile('ls'),
-    mkfile('cat'),
-  ]),
-]);
+const tree = 
+['A', [              //     A
+  ['B', [            //    / \
+    ['D'],           //   B   C
+  ]],                //  /   / \
+  ['C', [            // D   E   F
+    ['E'],
+    ['F'],
+  ]],
+]];
 
-console.log(getNodesCount(tree));
- */
-const tree = ['Moscow',
-  [
-    ['Smolensk'],
-    ['Yaroslavl'],
-    ['Voronezh', [
-      ['Liski'],
-      ['Boguchar'],
-      ['Kursk', [
-        ['Belgorod', [
-          ['Borisovka'],
-        ]],
-        ['Kurchatov'],
-      ]],
-    ]],
-    ['Ivanovo', [
-      ['Kostroma'], ['Kineshma'],
-    ]],
-    ['Vladimir'],
-    ['Tver', [
-      ['Klin'], ['Dubna'], ['Rzhev'],
-    ]],
-  ],
-];
-
-console.log(itinerary(tree, 'Dubna', 'Kostroma'));
+transformer(tree, 'B');

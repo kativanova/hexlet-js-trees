@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@hexlet/graphs": "^0.3.2",
     "@hexlet/immutable-fs-trees": "^0.7.1",
     "lodash": "^4.17.21"
   },
