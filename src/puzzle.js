@@ -10,6 +10,7 @@ const makeJoints = (branch, parent) => {
   const flatChildren = _.flatten(children);
   const neighbours = [parent, ...flatChildren]
     .filter((n) => n && !_.isArray(n));
+
   const joints = children.reduce((acc, child) => ({ ...acc, ...makeJoints(child, node) }), {});
   return { [node]: neighbours, ...joints };
 };
@@ -30,15 +31,12 @@ const buildTree = (joints, root) => {
 const combine = (...branches) => {
   const [firstBranch] = branches;
   const [root] = firstBranch;
-  const joints = branches.map((branch) => makeJoints(branch))
+  const joints = branches
     .reduce((acc, branch) => {
-      const keys = Object.keys(branch);
-      const newAcc = _.cloneDeep(acc);
-      keys.forEach((key) => {
-        newAcc[key] = _.has(acc, key) ? _.union(acc[key], branch[key]) : [...branch[key]];
-      });
-      return newAcc;
+      const jointsFromBranch = makeJoints(branch);
+      return _.mergeWith(acc, jointsFromBranch, _.union);
     }, {});
+
   return buildTree(joints, root);
 };
 
