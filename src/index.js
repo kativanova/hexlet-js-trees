@@ -1,38 +1,25 @@
-import combine from './puzzle.js';
+import stringify from './stringify.js';
 
-const branch1 = ['A', [ //   A
-  ['B', [ //   |
-    ['C'], //   B
-    ['D'], //  / \
-  ]], // C   D
-]];
+console.log(stringify('hello')); // hello - значение приведено к строке, но не имеет кавычек
+console.log(stringify(true)); // true
+console.log(stringify(5)); // 5
 
-const branch2 = ['B', [ //   B
-  ['D', [ //   |
-    ['E'], //   D
-    ['F'], //  / \
-  ]], // E   F
-]];
+const data = { hello: 'world', is: true, nested: { count: 5 } };
+console.log(stringify(data)); // то же самое что console.log(stringify(data, ' ', 1);
+// {
+//  hello: world
+//  is: true
+//  nested: {
+//   count: 5
+//  }
+// }
 
-const branch3 = ['I', [ //   I
-  ['A', [ //   |
-    ['B', [ //   A
-      ['C'], //   |
-      ['H'], //   B
-    ]], //  / \
-  ]], // C   H
-]];
-
-combine(branch1, branch2, branch3);
-
-// ['A', [      //     A
-//   ['B', [    //    / \
-//     ['C'],   //   B   I
-//     ['D', [  //  /|\
-//       ['E'], // C D H
-//       ['F'], //  / \
-//     ]],      // E   F
-//     ['H'],
-//   ]],
-//   ['I'],
-// ]];
+console.log(stringify(data, '|-', 2));
+// Символ, переданный вторым аргументом повторяется столько раз, сколько указано третьим аргументом.
+// {
+// |-|-hello: world
+// |-|-is: true
+// |-|-nested: {
+// |-|-|-|-count: 5
+// |-|-}
+// }
