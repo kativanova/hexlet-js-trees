@@ -3,9 +3,17 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
     if (typeof (item) !== 'object') {
       return item.toString();
     }
-    const keys = Object.keys(item);
-    const strForKeys = keys.map((key) => `${replacer.repeat(spacesCount * depth)}${key}: ${iter(item[key], depth + 1)}\n`);
-    return `{\n${strForKeys.join('')}${replacer.repeat(spacesCount * (depth - 1))}}`;
+    const currentIndent = replacer.repeat(spacesCount * depth);
+    const bracketIndent = replacer.repeat(spacesCount * (depth - 1));
+
+    const strForKeys = Object
+      .entries(item)
+      .map(([key, val]) => `${currentIndent}${key}: ${iter(val, depth + 1)}`);
+    return [
+      '{',
+      ...strForKeys,
+      `${bracketIndent}}`,
+    ].join('\n');
   };
   return iter(value, 1);
 };
